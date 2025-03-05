@@ -14,7 +14,10 @@ class CombiApp:
         
         # Botón de regreso
         self.btn_atras = tk.Button(self.frame, text="← Atrás", width=20, bg="#7289DA", fg="white", font=("Arial", 10, "bold"),
-                                   command=self.root.quit)
+                           command=self.root.destroy)  # Esto solo cierra la ventana de la combi
+
+        #self.btn_atras = tk.Button(self.frame, text="← Atrás", width=20, bg="#7289DA", fg="white", font=("Arial", 10, "bold"),
+         #                          command=self.root.quit)
         self.btn_atras.grid(row=0, column=0, sticky='w', pady=5)
         
         # Título
