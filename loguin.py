@@ -152,3 +152,4 @@ tk.Button(registro_frame, text="Volver", command=mostrar_login).pack()
 
 # Mostrar pantalla de login al iniciar
 root.mainloop()
+
