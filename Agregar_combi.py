@@ -1,60 +1,65 @@
 import tkinter as tk
 from tkinter import simpledialog, messagebox, Canvas, filedialog
-from PIL import Image, ImageTk  # Requiere instalar pillow: pip install pillow
+from PIL import Image, ImageTk
+
+
+def centrar_ventana(ventana, ancho=600, alto=400):  # Ajusta el tamaño si es necesario
+    ancho_pantalla = ventana.winfo_screenwidth()
+    alto_pantalla = ventana.winfo_screenheight()
+    x = (ancho_pantalla - ancho) // 2
+    y = (alto_pantalla - alto) // 2
+    ventana.geometry(f"+{x}+{y}")
 
 class CombiApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Agrega tu combi")
-        self.root.configure(bg="#2C2F33")  # Fondo oscuro
-        
+        self.root.configure(bg="#2C2F33")
+
         # Marco principal
         self.frame = tk.Frame(root, padx=20, pady=20, bg="#2C2F33")
         self.frame.pack()
-        
+
         # Botón de regreso
         self.btn_atras = tk.Button(self.frame, text="← Atrás", width=20, bg="#7289DA", fg="white", font=("Arial", 10, "bold"),
-                           command=self.root.destroy)  # Esto solo cierra la ventana de la combi
-
-        #self.btn_atras = tk.Button(self.frame, text="← Atrás", width=20, bg="#7289DA", fg="white", font=("Arial", 10, "bold"),
-         #                          command=self.root.quit)
+                                    command=self.root.destroy)
         self.btn_atras.grid(row=0, column=0, sticky='w', pady=5)
-        
+
         # Título
         self.label_titulo = tk.Label(self.frame, text="Agrega tu combi", font=("Arial", 16, "bold"), fg="white", bg="#2C2F33")
         self.label_titulo.grid(row=0, column=1, columnspan=2)
-        
+
         # Nombre de la combi (editable)
         self.combi_nombre = tk.StringVar(value="Combi 1")
         self.entry_combi_nombre = tk.Entry(self.frame, textvariable=self.combi_nombre, font=("Arial", 12), width=22, bg="#99AAB5", fg="black")
         self.entry_combi_nombre.grid(row=1, column=0, columnspan=2, pady=5)
-        
+
         # Sección de imagen (con botón para cargar)
         self.label_imagen = tk.Label(self.frame, text="[Imagen Combi Aquí]", width=20, height=5, bg="#4F545C", fg="white")
         self.label_imagen.grid(row=2, column=0, columnspan=2, pady=10)
 
         self.btn_cargar_imagen = tk.Button(self.frame, text="Cargar Imagen", command=self.cargar_imagen, width=22, 
-                                           bg="#7289DA", fg="white", font=("Arial", 10, "bold"))
+                                            bg="#7289DA", fg="white", font=("Arial", 10, "bold"))
         self.btn_cargar_imagen.grid(row=3, column=0, columnspan=2, pady=5)
-        
+
         self.imagen_path = None  # Para guardar la ruta de la imagen
 
         # Formularios de información
         self.entries = {}
         info_labels = ["Rutas", "Horarios", "Placas", "Modelo", "Marca"]
-        
+
         for i, label in enumerate(info_labels):
             lbl = tk.Label(self.frame, text=label, width=20, fg="white", bg="#2C2F33")
             lbl.grid(row=4+i, column=0, pady=2)
             entry = tk.Entry(self.frame, width=22, bg="#99AAB5", fg="black")
             entry.grid(row=4+i, column=1, pady=2)
             self.entries[label] = entry
-        
+
         # Botón para agregar combi
         self.btn_agregar_combi = tk.Button(self.frame, text="Agregar combi", width=22, bg="#43B581", fg="white", font=("Arial", 10, "bold"),
-                                           command=self.guardar_combi)
+                                            command=self.guardar_combi)
         self.btn_agregar_combi.grid(row=9, column=0, columnspan=2, pady=10)
-        
+
         # Sección de asientos
         self.asientos_count = tk.IntVar(value=0)
 
@@ -66,13 +71,15 @@ class CombiApp:
         self.label_asientos_numero.grid(row=1, column=2, sticky="e")
 
         self.btn_agregar_asiento = tk.Button(self.frame, text="Agregar asientos", command=self.agregar_asientos, width=22,
-                                             bg="#7289DA", fg="white", font=("Arial", 10, "bold"))
+                                                bg="#7289DA", fg="white", font=("Arial", 10, "bold"))
         self.btn_agregar_asiento.grid(row=2, column=2, pady=10)
-        
+
         self.canvas = Canvas(self.frame, width=300, height=300, bg="#23272A", highlightthickness=0)
         self.canvas.grid(row=3, column=2, rowspan=6, padx=20, pady=10)
-        
+
         self.asientos = []
+
+        centrar_ventana(self.root)  # Centrar la ventana
 
     def cargar_imagen(self):
         path = filedialog.askopenfilename(title="Selecciona una imagen", 
@@ -138,4 +145,5 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = CombiApp(root)
     root.mainloop()
+
 
