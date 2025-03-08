@@ -1,10 +1,19 @@
 import tkinter as tk
 from tkinter import ttk
 
+def centrar_ventana(ventana, ancho=600, alto=400):  # Ajusta el tamaño si es necesario
+    ancho_pantalla = ventana.winfo_screenwidth()
+    alto_pantalla = ventana.winfo_screenheight()
+    x = (ancho_pantalla - ancho) // 2
+    y = (alto_pantalla - alto) // 2
+    ventana.geometry(f"+{x}+{y}")
+
 def abrir_catalogo():
     ventana = tk.Toplevel()
     ventana.title("Catálogo de Combis")
-    ventana.geometry("600x400")
+    ventana.geometry("600x400")  # Mantén las dimensiones fijas
+
+    centrar_ventana(ventana)  # Centrar la ventana
 
     btn_atras = tk.Button(ventana, text="Atrás", command=ventana.destroy)
     btn_atras.pack(pady=10, padx=10, anchor="nw")
