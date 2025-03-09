@@ -6,7 +6,7 @@ from Reservar_Asientos import ReservaAsientosApp
 from Editar_Combi import EditarCombiApp
 from Administrar_Usuario import administrar_usuario
 
-def centrar_ventana(ventana, ancho=600, alto=400):  # Ajusta el tamaño si es necesario
+def centrar_ventana(ventana, ancho=600, alto=400):
     ancho_pantalla = ventana.winfo_screenwidth()
     alto_pantalla = ventana.winfo_screenheight()
     x = (ancho_pantalla - ancho) // 2
@@ -34,32 +34,32 @@ def salir():
 # Crear ventana principal
 root = tk.Tk()
 root.title("Sistema de Combis")
-root.geometry("600x400")
+root.configure(bg="#2C2F33") #color de fondo
 
-centrar_ventana(root) #Centrar la ventana principal
+centrar_ventana(root)
 
-frame = tk.Frame(root)
+frame = tk.Frame(root, bg="#2C2F33", padx=20, pady=20) #color de fondo y padding
 frame.pack(pady=10)
 
-btn_agregar_combi = tk.Button(frame, text="Agregar combi", command=abrir_agregar_combi)
+btn_agregar_combi = tk.Button(frame, text="Agregar combi", command=abrir_agregar_combi, bg="#7289DA", fg="white", font=("Arial", 10, "bold"))
 btn_agregar_combi.grid(row=0, column=0, padx=5, pady=5)
 
-btn_editar_combi = tk.Button(frame, text="Editar combi", command=editar_combi)
+btn_editar_combi = tk.Button(frame, text="Editar combi", command=editar_combi, bg="#7289DA", fg="white", font=("Arial", 10, "bold"))
 btn_editar_combi.grid(row=1, column=0, padx=5, pady=5)
 
-btn_reserva_asientos = tk.Button(frame, text="Registrar viaje", command=abrir_reservar_asientos)
+btn_reserva_asientos = tk.Button(frame, text="Registrar viaje", command=abrir_reservar_asientos, bg="#7289DA", fg="white", font=("Arial", 10, "bold"))
 btn_reserva_asientos.grid(row=0, column=2, padx=5, pady=5)
 
-btn_catalogo = tk.Button(frame, text="Catálogo", command=abrir_catalogo)
+btn_catalogo = tk.Button(frame, text="Catálogo", command=abrir_catalogo, bg="#7289DA", fg="white", font=("Arial", 10, "bold"))
 btn_catalogo.grid(row=0, column=3, padx=5, pady=5)
 
-btn_administrar_usuario = tk.Button(frame, text="Administrar usuario", command=abrir_administrar_usuario)
+btn_administrar_usuario = tk.Button(frame, text="Administrar usuario", command=abrir_administrar_usuario, bg="#7289DA", fg="white", font=("Arial", 10, "bold"))
 btn_administrar_usuario.grid(row=0, column=4, padx=5, pady=5)
 
-btn_salir = tk.Button(root, text="Salir", command=salir)
+btn_salir = tk.Button(root, text="Salir", command=salir, bg="#7289DA", fg="white", font=("Arial", 10, "bold"))
 btn_salir.pack(pady=10)
 
-mensaje = tk.Label(root, text="BIENVENIDO\nAgregue su primera combi", font=("Arial", 12))
+mensaje = tk.Label(root, text="BIENVENIDO\nAgregue su primera combi", font=("Arial", 12), fg="white", bg="#2C2F33") #color de texto y fondo
 mensaje.pack(pady=20)
 
 root.mainloop()
