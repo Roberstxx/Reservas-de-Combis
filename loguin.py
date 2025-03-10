@@ -1,38 +1,61 @@
 import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
+import sqlite3
 import subprocess
 import os
 
-ARCHIVO_USUARIOS = "usuarios.txt"
+# Conectar a la base de datos SQLite
+def conectar_db():
+    conn = sqlite3.connect("usuarios.db")
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS usuarios (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            usuario TEXT UNIQUE,
+            password TEXT
+        )
+    """)
+    conn.commit()
+    conn.close()
 
-# Cargar usuarios desde un archivo
-def cargar_usuarios():
-    if not os.path.exists(ARCHIVO_USUARIOS):
-        return {}
-    with open(ARCHIVO_USUARIOS, "r") as f:
-        return dict(line.strip().split(",") for line in f)
+conectar_db()
 
-# Guardar usuarios en un archivo
+# Guardar usuario en la base de datos
 def guardar_usuario(usuario, password):
-    with open(ARCHIVO_USUARIOS, "a") as f:
-        f.write(f"{usuario},{password}\n")
+    conn = sqlite3.connect("usuarios.db")
+    cursor = conn.cursor()
+    try:
+        cursor.execute("INSERT INTO usuarios (usuario, password) VALUES (?, ?)", (usuario, password))
+        conn.commit()
+        return True
+    except sqlite3.IntegrityError:
+        return False
+    finally:
+        conn.close()
 
-usuarios_registrados = cargar_usuarios()
+# Validar usuario en la base de datos
+def validar_usuario(usuario, password):
+    conn = sqlite3.connect("usuarios.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM usuarios WHERE usuario = ? AND password = ?", (usuario, password))
+    resultado = cursor.fetchone()
+    conn.close()
+    return resultado is not None
 
 # Función para borrar texto por defecto
 def on_entry_click(event, entry, texto_default, ocultar=False):
     if entry.get() == texto_default:
         entry.delete(0, tk.END)
         if ocultar:
-            entry.config(show="*")  # Oculta la contraseña
+            entry.config(show="*")
 
 # Función para restaurar texto por defecto
 def on_focus_out(event, entry, texto_default, ocultar=False):
     if entry.get() == "":
         entry.insert(0, texto_default)
         if ocultar:
-            entry.config(show="")  # Muestra el texto normal
+            entry.config(show="")
 
 # Mostrar pantalla de registro
 def mostrar_registro():
@@ -64,14 +87,11 @@ def crear_cuenta():
         messagebox.showerror("Error", "Las contraseñas no coinciden")
         return
     
-    if usuario in usuarios_registrados:
+    if guardar_usuario(usuario, password):
+        messagebox.showinfo("Éxito", "Cuenta creada con éxito")
+        mostrar_login()
+    else:
         messagebox.showerror("Error", "El usuario ya existe")
-        return
-    
-    usuarios_registrados[usuario] = password
-    guardar_usuario(usuario, password)
-    messagebox.showinfo("Éxito", "Cuenta creada con éxito")
-    mostrar_login()
 
 # Iniciar sesión
 def iniciar_sesion():
@@ -81,10 +101,10 @@ def iniciar_sesion():
     if not validar_entrada(usuario, password):
         return
     
-    if usuario in usuarios_registrados and usuarios_registrados[usuario] == password:
+    if validar_usuario(usuario, password):
         messagebox.showinfo("Inicio de sesión", f"Bienvenido, {usuario}!")
-        root.destroy()  # Cierra la ventana de login
-        subprocess.run(["python", "main.py"])  # Ejecuta el sistema principal
+        root.destroy()
+        subprocess.run(["python", "main.py"])
     else:
         messagebox.showerror("Error", "Usuario o contraseña incorrectos")
 
@@ -152,4 +172,3 @@ tk.Button(registro_frame, text="Volver", command=mostrar_login).pack()
 
 # Mostrar pantalla de login al iniciar
 root.mainloop()
-
