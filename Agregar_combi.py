@@ -146,16 +146,14 @@ class CombiApp:
         num_asientos = self.asientos_count.get()
         imagen_path = self.imagen_path
 
-        # Validar datos de entrada
-        if not nombre_combi or not all(datos.values()):
-            messagebox.showerror("Error", "Por favor, completa todos los campos correctamente.")
+        if not nombre_combi or not all(datos.values()) or num_asientos <= 0:
+            messagebox.showerror("Error", "Completa todos los campos correctamente.")
             return
 
-        # Confirmación antes de guardar
-        confirmacion = messagebox.askyesno("Confirmar", f"¿Deseas guardar la combi '{nombre_combi}'?")
-        if not confirmacion:
+        resumen = f"Nombre: {nombre_combi}\n" + "\n".join([f"{k}: {v}" for k, v in datos.items()]) + f"\nAsientos: {num_asientos}"
+        if not messagebox.askyesno("Confirmar", f"¿Guardar esta combi?\n{resumen}"):
             return
-
+        
         conn = sqlite3.connect("combis.db")
         cursor = conn.cursor()
 
@@ -166,9 +164,9 @@ class CombiApp:
 
         conn.commit()
         conn.close()
-
-        messagebox.showinfo("Guardado", "La información de la combi se ha guardado correctamente.") 
-
+        
+        messagebox.showinfo("Guardado", "Combi guardada correctamente.")
+                            
 # Función para crear tooltips
 def create_tooltip(widget, text):
     tooltip = tk.Toplevel(widget)
@@ -206,5 +204,4 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = CombiApp(root)
     root.mainloop()
-
 
