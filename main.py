@@ -6,7 +6,7 @@ from Reservar_Asientos import ReservaAsientosApp
 from Editar_Combi import EditarCombiApp
 from Administrar_Usuario import administrar_usuario
 
-def centrar_ventana(ventana, ancho=600, alto=400):
+def centrar_ventana(ventana, ancho=800, alto=600):
     ancho_pantalla = ventana.winfo_screenwidth()
     alto_pantalla = ventana.winfo_screenheight()
     x = (ancho_pantalla - ancho) // 2
@@ -38,7 +38,7 @@ root.configure(bg="#2C2F33") #color de fondo
 
 centrar_ventana(root)
 
-frame = tk.Frame(root, bg="#2C2F33", padx=20, pady=20) #color de fondo y padding
+frame = tk.Frame(root, bg="#2C2F33", padx=40, pady=40) #color de fondo y padding
 frame.pack(pady=10)
 
 btn_agregar_combi = tk.Button(frame, text="Agregar combi", command=abrir_agregar_combi, bg="#7289DA", fg="white", font=("Arial", 10, "bold"))
