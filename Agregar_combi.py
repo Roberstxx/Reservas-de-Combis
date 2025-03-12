@@ -73,7 +73,7 @@ class CombiApp:
         self.entries = {}
         info_labels = {
             "Rutas": "Ejemplo: 'Centro - Plaza'",
-            "Horarios": "Ejemplo: '08:00 - 18:00'",
+            "Horarios": "Ejemplo: '08:00AM, 18:00PM'",
             "Placas": "Ejemplo: 'ABC-1234'",
             "Modelo": "Ejemplo: 'Sprinter 2020'",
             "Marca": "Ejemplo: 'Mercedes-Benz'"
@@ -204,4 +204,5 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = CombiApp(root)
     root.mainloop()
+
 
