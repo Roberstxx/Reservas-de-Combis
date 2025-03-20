@@ -5,7 +5,7 @@ import sqlite3
 import subprocess
 import os
 
-# centrar ventana
+# Centrar ventana
 def centrar_ventana(ventana, ancho, alto):
     ancho_pantalla = ventana.winfo_screenwidth()
     alto_pantalla = ventana.winfo_screenheight()
@@ -128,10 +128,18 @@ root.resizable(False, False)
 login_frame = tk.Frame(root)
 login_frame.pack(expand=True)
 
-# Imagen
-img = Image.open("assets/logoCombi.png").resize((170, 170))
-img = ImageTk.PhotoImage(img)
-tk.Label(login_frame, image=img).pack(pady=10)
+# Ruta y carga de la imagen
+img_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "combi.ico")
+if os.path.exists(img_path):  # Verifica si la imagen existe
+    img = Image.open(img_path).resize((170, 170))  # Ajusta el tamaño de la imagen
+    img = ImageTk.PhotoImage(img)
+
+    # Label para mostrar la imagen
+    img_label = tk.Label(login_frame, image=img)
+    img_label.image = img  # Referencia para evitar que sea eliminada
+    img_label.pack(pady=10)
+else:
+    print("La imagen no se encuentra en la ruta especificada:", img_path)
 
 # Entradas de usuario y contraseña
 entry_usuario = tk.Entry(login_frame, width=30, justify="center")
@@ -182,3 +190,4 @@ tk.Button(registro_frame, text="Volver", command=mostrar_login).pack()
 
 # Mostrar pantalla de login al iniciar
 root.mainloop()
+
